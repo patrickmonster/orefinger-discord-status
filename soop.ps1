@@ -286,7 +286,7 @@ function Recive-Discord-Message {
 # Prompt user for channel ID
 Write-Host "방송알리미 - 라이브 활동 공유"
 if ( -not $args[0]) {
-    $channelId = Read-Host "Enter the Chzzk channel ID"
+    $channelId = Read-Host "Enter the SOOP channel ID"
 }else {
     $channelId = $args[0]
 }
