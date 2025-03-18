@@ -3,6 +3,8 @@
 # 제작일 : 2025-03-18
 # 참조코드 : https://github.com/discordjs/RPC/blob/master/src/transports/ipc.js
 
+# niceqq88
+
 $global:version = @{
     "제작자" = "patrickmonster"
     "제작일" = "2025-03-18"
@@ -17,7 +19,7 @@ Write-Host "방송알리미 $($global:version | ConvertTo-Json -Depth 10)"
 
 # ipc 
 
-$CLIENT_ID = "1209477059622080564"
+$CLIENT_ID = "826484552029175808"
 
 # use the connection to the IPC
 $global:working = @{
@@ -73,7 +75,7 @@ function Get-State {
     Write-Host "Getting state for channel ID: $channel_id"
 
     $request = @{
-        Uri =  "https://api.chzzk.naver.com/service/v2/channels/$channel_id/live-detail"
+        Uri = "https://bjapi.afreecatv.com/api/$channel_id/station"
         ContentType = 'application/json; charset=UTF-8'
         Method = "GET"
         Headers = @{
@@ -83,24 +85,28 @@ function Get-State {
     
     $response = Invoke-RestMethod @request
 
-    $content = $response.content
+    $content = $response
 
-    
-    $status = $content.status
-    $liveTitle = $content.liveTitle 
-    $liveCategoryValue = $content.liveCategoryValue
-    $concurrentUserCount = $content.concurrentUserCount
-    $channel = $content.channel
-    $openDate = [Datetime]::ParseExact($content.openDate , 'yyyy-MM-dd HH:mm:ss', $null)
-    # 2025-03-18 11:35:59
+    $broad = $content.broad
+
+    $details = $broad.broad_title
+    $no = $broad.broad_no
+    $id = $broad.user_id
+
+    $station = $content.station
+
+    $profile_image = $content.profile_image
+
+    Write-Host "?????? :: $($station | ConvertTo-Json -Depth 10)"
+    $broad_start = [Datetime]::ParseExact($station.broad_start , 'yyyy-MM-dd HH:mm:ss', $null)
 
     
     $assets = @{
-        large_text = "$($channel.channelName) - $($concurrentUserCount.ToString('N0'))명 시청 중"
-        small_image = 'https://ssl.pstatic.net/static/nng/glive/icon/favicon.png'
+        large_text = "SOOP 방송중"
+        small_image = 'https://play-lh.googleusercontent.com/p9zXgkP4pkCDVR-dQ2HfcHyD5vg9MTjDLFVpckObdHI9dGiiMO9TldFJ7kc5bgEGwYjo=w240-h480-rw'
     }
-    if ( $content.liveImageUrl -ne $null ) { 
-        $assets.large_image = $content.liveImageUrl.Replace('{type}', '1080')
+    if ( $profile_image -ne $null ) { 
+        $assets.large_image = "https:$profile_image"
     }
 
     if ( $status -eq "CLOSE" ) {
@@ -110,20 +116,21 @@ function Get-State {
 
     $button = @{
         label = '보기'
-        url = "https://chzzk.naver.com/live/$channel_id"
+        url = "https://play.sooplive.co.kr/$channel_id/$no"
     }
 
 
     $out = @{
-        details = $liveTitle
-        state = "$liveCategoryValue 하는 중"
+        details = $details
         timestamps = @{
-            start = $(Convert-ToUnixDate $openDate)
+            start = $(Convert-ToUnixDate $broad_start)
         }
         buttons = @( $button )
         assets = $assets
         instance = $false
     }
+
+    Write-Host " ?????? :: $($out | ConvertTo-Json -Depth 10)"
 
     return $out
 }
