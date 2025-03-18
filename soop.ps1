@@ -31,11 +31,10 @@ $global:working = @{
 
 # Check if the OS is Windows
 function Get-IPCPath {
-    param (
-        [string]$id
-    )
-    if ($IsWindows) {
-        return "\\.\pipe\discord-ipc-$id"
+    param ($id = 0)
+    
+    if ($($IsWindows -eq $true) -or $($IsWindows -eq $null)) {
+        return "discord-ipc-$id"
     }
 
     $prefix = $env:XDG_RUNTIME_DIR
@@ -52,8 +51,9 @@ function Get-IPCPath {
         $prefix = '/tmp'
     }
     $prefix = $prefix.TrimEnd('/')
-    return "$prefix/discord-ipc-$id"
+    return "$prefix\/discord-ipc-$id"
 }
+
 
 # 메세지 전송 id 생성
 function Generate-UUID {
