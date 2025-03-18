@@ -52,12 +52,12 @@ if %choice%==3 goto :exit
 
 :chzzk
 echo "치지직을 실행합니다."
-powershell -Command "(New-Object System.Net.WebClient).DownloadFile('https://patrickmonster.github.io/orefinger-discord-status/soop.ps1', 'start.ps1')"
+powershell -Command "(New-Object System.Net.WebClient).DownloadFile('https://patrickmonster.github.io/orefinger-discord-status/chzzk.ps1', 'start.ps1')"
 goto :Running
 
 :SOOP
 echo "SOOP을 실행합니다."
-powershell -Command "(New-Object System.Net.WebClient).DownloadFile('https://patrickmonster.github.io/orefinger-discord-status/chzzk.ps1', 'start.ps1')"
+powershell -Command "(New-Object System.Net.WebClient).DownloadFile('https://patrickmonster.github.io/orefinger-discord-status/soop.ps1', 'start.ps1')"
 goto :Running
 
 :Running

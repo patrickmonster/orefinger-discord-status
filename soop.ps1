@@ -297,6 +297,8 @@ if (-not $channelId) {
     exit
 }
 
+$channelId = $channelId.Trim()
+
 # Install the PowerShell Discord IPC module
 Try {
     $pipeServer = Get-Connect-IPC
