@@ -28,12 +28,8 @@ if %errorlevel% neq 0 (
         pause
         exit /b %errorlevel%
     )
-    echo PowerShell is installed. Restarting...
+    echo PowerShell is installed!
 
-    @REM start "" "%~dpnx0"
-    
-    set /p c=
-    exit /b %errorlevel%
 )
 
 
